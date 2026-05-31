@@ -35,7 +35,7 @@ public class OllamaLlmClient implements LlmClient {
         body.put("think", false);
         body.put("options", Map.of(
                 "temperature", 0.0,
-                "num_predict", 128
+                "num_predict", 512
         ));
 
         Response response = given()
