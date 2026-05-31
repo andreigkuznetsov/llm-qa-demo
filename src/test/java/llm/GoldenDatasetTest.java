@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Tag;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
 import java.util.List;
