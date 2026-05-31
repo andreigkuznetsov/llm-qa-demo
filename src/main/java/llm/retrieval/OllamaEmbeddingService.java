@@ -7,7 +7,7 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
-public class OllamaEmbeddingService implements llm.retrieval.EmbeddingService {
+public class OllamaEmbeddingService implements EmbeddingService {
 
     private final String baseUri;
     private final String model;
@@ -19,10 +19,10 @@ public class OllamaEmbeddingService implements llm.retrieval.EmbeddingService {
 
     @Override
     public double[] embed(String text) {
-        java.util.List<Float> embedding = given()
+        List<Float> embedding = given()
                 .baseUri(baseUri)
-                .contentType(io.restassured.http.ContentType.JSON)
-                .body(java.util.Map.of("model", model, "prompt", text))
+                .contentType(ContentType.JSON)
+                .body(Map.of("model", model, "prompt", text))
                 .post("/api/embeddings")
                 .then()
                 .statusCode(200)

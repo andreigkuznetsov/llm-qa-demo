@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@org.junit.jupiter.api.Tag("full")
-public class GeneralityTest extends llm.BaseLlmTest {
+@Tag("full")
+public class GeneralityTest extends BaseLlmTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldNotBeTooGeneric() {
         String response = llmClient.generate("Сгенерируй тест для логина").toLowerCase();
 

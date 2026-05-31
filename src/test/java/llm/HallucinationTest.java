@@ -6,11 +6,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@org.junit.jupiter.api.Tag("full")
-public class HallucinationTest extends llm.BaseLlmTest {
+@Tag("full")
+public class HallucinationTest extends BaseLlmTest {
 
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.ValueSource(strings = {
+    @ParameterizedTest
+    @ValueSource(strings = {
             "Расскажи про API эндпоинт /api/v99/quantum-teleport",
             "Напиши тест для библиотеки pytest-quantum-ai версии 15.0"
     })

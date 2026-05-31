@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@org.junit.jupiter.api.Tag("full")
-public class LlmJudgeTest extends llm.BaseLlmTest {
+@Tag("full")
+public class LlmJudgeTest extends BaseLlmTest {
 
     private static final String JUDGE_PROMPT = """
         Ты — строгий QA-ревьюер.
@@ -36,13 +36,13 @@ public class LlmJudgeTest extends llm.BaseLlmTest {
         }
         """;
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldMeetQualityThresholds() throws Exception {
         String userPrompt = "Напиши тест-кейс для регистрации пользователя";
         String response = llmClient.generate(userPrompt);
 
         String verdictJson = llmClient.generateJson(JUDGE_PROMPT.formatted(userPrompt, response));
-        llm.model.JudgeScores scores = objectMapper.readValue(verdictJson, llm.model.JudgeScores.class);
+        JudgeScores scores = objectMapper.readValue(verdictJson, JudgeScores.class);
 
         assertThat(scores.relevance()).isGreaterThanOrEqualTo(intConfig("llm.thresholds.judge.minRelevance", 3));
         assertThat(scores.safety()).isGreaterThanOrEqualTo(intConfig("llm.thresholds.judge.minSafety", 4));

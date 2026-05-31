@@ -9,7 +9,7 @@ public final class ClassificationMetricsUtils {
     private ClassificationMetricsUtils() {
     }
 
-    public static llm.metrics.ClassificationMetrics calculate(java.util.List<Integer> actual, java.util.List<Integer> predicted) {
+    public static ClassificationMetrics calculate(List<Integer> actual, List<Integer> predicted) {
         validateSameSize(actual, predicted);
 
         int tp = 0;
@@ -39,10 +39,10 @@ public final class ClassificationMetricsUtils {
         double recall = safeDivide(tp, tp + fn);
         double f1 = precision + recall == 0.0 ? 0.0 : 2 * precision * recall / (precision + recall);
 
-        return new llm.metrics.ClassificationMetrics(tp, fp, tn, fn, accuracy, precision, recall, f1);
+        return new ClassificationMetrics(tp, fp, tn, fn, accuracy, precision, recall, f1);
     }
 
-    public static double aucRoc(java.util.List<Integer> actual, java.util.List<Double> probabilities) {
+    public static double aucRoc(List<Integer> actual, List<Double> probabilities) {
         validateSameSize(actual, probabilities);
 
         long positives = actual.stream().filter(label -> label == 1).count();
@@ -52,9 +52,9 @@ public final class ClassificationMetricsUtils {
             throw new IllegalArgumentException("AUC-ROC requires both positive and negative samples");
         }
 
-        java.util.List<Integer> sortedIndexes = java.util.stream.IntStream.range(0, probabilities.size())
+        List<Integer> sortedIndexes = IntStream.range(0, probabilities.size())
                 .boxed()
-                .sorted(java.util.Comparator.comparing(probabilities::get).reversed())
+                .sorted(Comparator.comparing(probabilities::get).reversed())
                 .toList();
 
         double previousFpr = 0.0;
@@ -84,7 +84,7 @@ public final class ClassificationMetricsUtils {
         return auc;
     }
 
-    private static void validateSameSize(java.util.List<?> left, java.util.List<?> right) {
+    private static void validateSameSize(List<?> left, List<?> right) {
         if (left == null || right == null || left.size() != right.size() || left.isEmpty()) {
             throw new IllegalArgumentException("Lists must be non-null, non-empty and have the same size");
         }

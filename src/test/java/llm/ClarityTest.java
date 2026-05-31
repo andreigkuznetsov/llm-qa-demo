@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@org.junit.jupiter.api.Tag("full")
-public class ClarityTest extends llm.BaseLlmTest {
+@Tag("full")
+public class ClarityTest extends BaseLlmTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldBeReadableAndStructured() {
         String response = llmClient.generate("Напиши понятный тест-кейс для логина");
         assertThat(response.split("\\R").length).isGreaterThan(2);

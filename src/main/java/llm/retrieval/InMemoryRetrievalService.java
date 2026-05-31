@@ -5,23 +5,23 @@ import java.util.List;
 
 public class InMemoryRetrievalService {
 
-    private final java.util.List<DocumentChunk> corpus;
-    private final llm.retrieval.EmbeddingService embeddingService;
+    private final List<DocumentChunk> corpus;
+    private final EmbeddingService embeddingService;
 
-    public InMemoryRetrievalService(java.util.List<DocumentChunk> corpus, llm.retrieval.EmbeddingService embeddingService) {
+    public InMemoryRetrievalService(List<DocumentChunk> corpus, EmbeddingService embeddingService) {
         this.corpus = corpus;
         this.embeddingService = embeddingService;
     }
 
-    public java.util.List<SearchResult> search(String query, int topK) {
+    public List<SearchResult> search(String query, int topK) {
         double[] queryVector = embeddingService.embed(query);
 
         return corpus.stream()
-                .map(document -> new llm.retrieval.SearchResult(
+                .map(document -> new SearchResult(
                         document,
                         cosineSimilarity(queryVector, embeddingService.embed(document.title() + " " + document.text()))
                 ))
-                .sorted(java.util.Comparator.comparing(llm.retrieval.SearchResult::score).reversed())
+                .sorted(Comparator.comparing(SearchResult::score).reversed())
                 .limit(topK)
                 .toList();
     }

@@ -12,18 +12,18 @@ public abstract class BaseLlmTest {
 
     protected static LlmClient llmClient;
     protected static ObjectMapper objectMapper;
-    protected static java.util.Properties testConfig;
+    protected static Properties testConfig;
 
     @BeforeAll
     static void init() throws Exception {
         String baseUrl = System.getProperty("ollama.baseUrl", "http://localhost:11434");
         String model = System.getProperty("ollama.model", "qwen3:8b");
 
-        llmClient = new llm.client.OllamaLlmClient(baseUrl, model);
-        objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        llmClient = new OllamaLlmClient(baseUrl, model);
+        objectMapper = new ObjectMapper();
 
-        testConfig = new java.util.Properties();
-        try (java.io.InputStream in = llm.BaseLlmTest.class.getClassLoader().getResourceAsStream("thresholds.properties")) {
+        testConfig = new Properties();
+        try (InputStream in = BaseLlmTest.class.getClassLoader().getResourceAsStream("thresholds.properties")) {
             if (in != null) {
                 testConfig.load(in);
             }

@@ -1,7 +1,7 @@
 package llm.retrieval;
 
 public record SearchResult(
-        llm.retrieval.DocumentChunk document,
+        DocumentChunk document,
         double score
 ) {
 }

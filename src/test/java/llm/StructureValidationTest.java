@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@org.junit.jupiter.api.Tag("full")
-public class StructureValidationTest extends llm.BaseLlmTest {
+@Tag("full")
+public class StructureValidationTest extends BaseLlmTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldGenerateValidTestCaseJson() throws Exception {
         String json = llmClient.generateJson("""
     Сгенерируй тест-кейс для POST /login.
@@ -28,14 +28,14 @@ public class StructureValidationTest extends llm.BaseLlmTest {
     }
     """);
 
-        llm.model.GeneratedTestCase testCase = objectMapper.readValue(json, llm.model.GeneratedTestCase.class);
+        GeneratedTestCase testCase = objectMapper.readValue(json, GeneratedTestCase.class);
 
         assertThat(testCase.name()).isNotBlank();
         assertThat(testCase.steps()).isNotNull().isNotEmpty();
         assertThat(testCase.expected()).isNotBlank();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldNotReturnFreeTextWhenJsonExpected() {
         String json = llmClient.generateJson("""
     Верни только валидный JSON.

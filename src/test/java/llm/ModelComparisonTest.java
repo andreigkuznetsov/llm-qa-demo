@@ -11,8 +11,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@org.junit.jupiter.api.Tag("full")
-public class ModelComparisonTest extends llm.BaseLlmTest {
+@Tag("full")
+public class ModelComparisonTest extends BaseLlmTest {
 
     private static final String JUDGE_PROMPT = """
             Ты — строгий QA-ревьюер.
@@ -33,22 +33,22 @@ public class ModelComparisonTest extends llm.BaseLlmTest {
             }
             """;
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldCompareTwoModelsOnSameEvaluationSet() throws Exception {
         boolean abEnabled = Boolean.parseBoolean(System.getProperty(
                 "llm.ab.enabled",
                 testConfig.getProperty("llm.ab.enabled", "false")
         ));
-        org.junit.jupiter.api.Assumptions.assumeTrue(abEnabled, "A/B model comparison is disabled. Enable with -Dllm.ab.enabled=true");
+        Assumptions.assumeTrue(abEnabled, "A/B model comparison is disabled. Enable with -Dllm.ab.enabled=true");
 
         String baseUrl = System.getProperty("ollama.baseUrl", "http://localhost:11434");
         String modelA = System.getProperty("llm.ab.modelA", testConfig.getProperty("llm.ab.modelA", "qwen3:14b"));
         String modelB = System.getProperty("llm.ab.modelB", testConfig.getProperty("llm.ab.modelB", "llama3.2"));
 
-        llm.client.LlmClient clientA = new llm.client.OllamaLlmClient(baseUrl, modelA);
-        llm.client.LlmClient clientB = new llm.client.OllamaLlmClient(baseUrl, modelB);
+        LlmClient clientA = new OllamaLlmClient(baseUrl, modelA);
+        LlmClient clientB = new OllamaLlmClient(baseUrl, modelB);
 
-        java.util.List<String> prompts = java.util.List.of(
+        List<String> prompts = List.of(
                 "Сгенерируй негативный тест для POST /login с пустым паролем",
                 "Сгенерируй тест-кейс для загрузки файла больше 10MB",
                 "Напиши тест-кейс для поиска с пустой строкой"
@@ -67,12 +67,12 @@ public class ModelComparisonTest extends llm.BaseLlmTest {
         System.out.printf("%s average score: %.2f%n", modelB, modelBScore);
     }
 
-    private double averageJudgeScore(llm.client.LlmClient generationClient, java.util.List<String> prompts) {
+    private double averageJudgeScore(LlmClient generationClient, List<String> prompts) {
         return prompts.stream()
                 .mapToDouble(prompt -> {
                     try {
                         String response = generationClient.generate(prompt);
-                        llm.model.JudgeScores scores = judge(prompt, response);
+                        JudgeScores scores = judge(prompt, response);
                         return (scores.relevance()
                                 + scores.completeness()
                                 + scores.safety()
@@ -87,8 +87,8 @@ public class ModelComparisonTest extends llm.BaseLlmTest {
                 .orElse(0.0);
     }
 
-    private llm.model.JudgeScores judge(String prompt, String response) throws Exception {
+    private JudgeScores judge(String prompt, String response) throws Exception {
         String verdictJson = llmClient.generateJson(JUDGE_PROMPT.formatted(prompt, response));
-        return objectMapper.readValue(verdictJson, llm.model.JudgeScores.class);
+        return objectMapper.readValue(verdictJson, JudgeScores.class);
     }
 }

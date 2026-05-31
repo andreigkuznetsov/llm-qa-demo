@@ -5,13 +5,13 @@ import llm.util.TextSimilarityUtils;
 import java.util.List;
 import java.util.Set;
 
-public class BagOfWordsEmbeddingService implements llm.retrieval.EmbeddingService {
+public class BagOfWordsEmbeddingService implements EmbeddingService {
 
-    private final java.util.List<String> vocabulary;
+    private final List<String> vocabulary;
 
-    public BagOfWordsEmbeddingService(java.util.List<DocumentChunk> corpus) {
+    public BagOfWordsEmbeddingService(List<DocumentChunk> corpus) {
         this.vocabulary = corpus.stream()
-                .flatMap(doc -> llm.util.TextSimilarityUtils.tokenize(doc.title() + " " + doc.text()).stream())
+                .flatMap(doc -> TextSimilarityUtils.tokenize(doc.title() + " " + doc.text()).stream())
                 .distinct()
                 .sorted()
                 .toList();
@@ -19,7 +19,7 @@ public class BagOfWordsEmbeddingService implements llm.retrieval.EmbeddingServic
 
     @Override
     public double[] embed(String text) {
-        java.util.Set<String> tokens = llm.util.TextSimilarityUtils.tokenize(text);
+        Set<String> tokens = TextSimilarityUtils.tokenize(text);
         double[] vector = new double[vocabulary.size()];
 
         for (int i = 0; i < vocabulary.size(); i++) {

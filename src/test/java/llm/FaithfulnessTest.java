@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@org.junit.jupiter.api.Tag("full")
-public class FaithfulnessTest extends llm.BaseLlmTest {
+@Tag("full")
+public class FaithfulnessTest extends BaseLlmTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldUseOnlyProvidedContext() {
         String context = """
                 API:
@@ -28,7 +28,7 @@ public class FaithfulnessTest extends llm.BaseLlmTest {
         assertThat(lower).doesNotContain("/register", "/admin", "500");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldRejectUnsupportedClaims() {
         String context = "Документ содержит только endpoint GET /users";
         String response = llmClient.generate("""

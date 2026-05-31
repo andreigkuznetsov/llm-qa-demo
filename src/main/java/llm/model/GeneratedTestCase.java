@@ -4,7 +4,7 @@ import java.util.List;
 
 public record GeneratedTestCase(
         String name,
-        java.util.List<String> steps,
+        List<String> steps,
         String expected
 ) {
 }

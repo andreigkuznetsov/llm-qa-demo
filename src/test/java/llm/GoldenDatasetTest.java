@@ -10,29 +10,29 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@org.junit.jupiter.api.Tag("full")
-public class GoldenDatasetTest extends llm.BaseLlmTest {
+@Tag("full")
+public class GoldenDatasetTest extends BaseLlmTest {
 
-    static java.util.List<llm.GoldenDatasetTest.GoldenCase> goldenCases() throws Exception {
-        try (java.io.InputStream in = llm.GoldenDatasetTest.class.getClassLoader().getResourceAsStream("golden-dataset.json")) {
-            return new llm.GoldenDatasetTest.ObjectMapperHolder().mapper.readValue(in, new com.fasterxml.jackson.core.type.TypeReference<>() {});
+    static List<GoldenCase> goldenCases() throws Exception {
+        try (InputStream in = GoldenDatasetTest.class.getClassLoader().getResourceAsStream("golden-dataset.json")) {
+            return new ObjectMapperHolder().mapper.readValue(in, new TypeReference<>() {});
         }
     }
 
-    @org.junit.jupiter.params.ParameterizedTest(name = "{0}")
-    @org.junit.jupiter.params.provider.MethodSource("goldenCases")
-    void shouldPassGoldenCase(llm.GoldenDatasetTest.GoldenCase c) {
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("goldenCases")
+    void shouldPassGoldenCase(GoldenCase c) {
         String response = llmClient.generate(c.prompt()).toLowerCase();
 
         c.mustContain().forEach(word -> assertThat(response).contains(word));
         c.mustNotContain().forEach(word -> assertThat(response).doesNotContain(word));
     }
 
-    public record GoldenCase(String id, String prompt, java.util.List<String> mustContain, java.util.List<String> mustNotContain) {
+    public record GoldenCase(String id, String prompt, List<String> mustContain, List<String> mustNotContain) {
         @Override public String toString() { return id; }
     }
 
     private static class ObjectMapperHolder {
-        private final com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        private final ObjectMapper mapper = new ObjectMapper();
     }
 }

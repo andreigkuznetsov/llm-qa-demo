@@ -8,14 +8,14 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@org.junit.jupiter.api.Tag("full")
-public class StabilityTest extends llm.BaseLlmTest {
+@Tag("full")
+public class StabilityTest extends BaseLlmTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldBeReasonablyStableAcrossRuns() {
         String prompt = "Сгенерируй краткий тест для логина";
 
-        java.util.List<String> responses = java.util.stream.IntStream.range(0, 5)
+        List<String> responses = IntStream.range(0, 5)
                 .mapToObj(i -> llmClient.generate(prompt).trim())
                 .toList();
 
@@ -24,9 +24,9 @@ public class StabilityTest extends llm.BaseLlmTest {
                 .isLessThanOrEqualTo(intConfig("llm.thresholds.stability.maxUniqueResponses", 3));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldHandlePromptVariations() {
-        java.util.List<String> prompts = java.util.List.of(
+        List<String> prompts = List.of(
                 "Сгенерируй тест для логина",
                 "сгенерируй тест для логина",
                 "Сгенерируй тест для  логина",

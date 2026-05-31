@@ -10,8 +10,8 @@ public final class TextSimilarityUtils {
     }
 
     public static double jaccardSimilarity(String left, String right) {
-        java.util.Set<String> leftTokens = tokenize(left);
-        java.util.Set<String> rightTokens = tokenize(right);
+        Set<String> leftTokens = tokenize(left);
+        Set<String> rightTokens = tokenize(right);
 
         if (leftTokens.isEmpty() && rightTokens.isEmpty()) {
             return 1.0;
@@ -25,15 +25,15 @@ public final class TextSimilarityUtils {
         return union == 0 ? 0.0 : (double) intersection / union;
     }
 
-    public static java.util.Set<String> tokenize(String text) {
+    public static Set<String> tokenize(String text) {
         if (text == null || text.isBlank()) {
-            return java.util.Set.of();
+            return Set.of();
         }
 
-        return java.util.Arrays.stream(text.toLowerCase()
+        return Arrays.stream(text.toLowerCase()
                         .replaceAll("[^a-zа-я0-9 ]", " ")
                         .split("\\s+"))
                 .filter(token -> token.length() > 2)
-                .collect(java.util.stream.Collectors.toSet());
+                .collect(Collectors.toSet());
     }
 }
