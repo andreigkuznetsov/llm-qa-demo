@@ -1,6 +1,8 @@
 package llm.client;
 
 import io.restassured.response.Response;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +13,7 @@ import static io.restassured.RestAssured.given;
 public class OllamaLlmClient implements LlmClient {
 
     private static final String JSON_UTF_8 = "application/json; charset=UTF-8";
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final String baseUri;
     private final String model;
@@ -101,12 +104,36 @@ public class OllamaLlmClient implements LlmClient {
     }
 
     private String extractText(Response response, String... paths) {
-        for (String path : paths) {
-            String text = response.jsonPath().getString(path);
-            if (text != null && !text.isBlank()) {
-                return text;
+        try {
+            JsonNode root = OBJECT_MAPPER.readTree(response.asString());
+
+            for (String path : paths) {
+                JsonNode node = getNode(root, path);
+                if (node != null && !node.isNull()) {
+                    String text = node.asText();
+                    if (text != null && !text.isBlank()) {
+                        return text;
+                    }
+                }
             }
+        } catch (Exception ignored) {
+            return "";
         }
+
         return "";
+    }
+
+    private JsonNode getNode(JsonNode root, String path) {
+        String[] parts = path.split("\\.");
+        JsonNode current = root;
+
+        for (String part : parts) {
+            if (current == null || current.isNull()) {
+                return null;
+            }
+            current = current.get(part);
+        }
+
+        return current;
     }
 }
