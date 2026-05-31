@@ -10,11 +10,11 @@ import java.util.Properties;
 
 public abstract class BaseLlmTest {
 
-    protected static llm.client.LlmClient llmClient;
-    protected static com.fasterxml.jackson.databind.ObjectMapper objectMapper;
+    protected static LlmClient llmClient;
+    protected static ObjectMapper objectMapper;
     protected static java.util.Properties testConfig;
 
-    @org.junit.jupiter.api.BeforeAll
+    @BeforeAll
     static void init() throws Exception {
         String baseUrl = System.getProperty("ollama.baseUrl", "http://localhost:11434");
         String model = System.getProperty("ollama.model", "qwen3:8b");
