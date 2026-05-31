@@ -1,0 +1,27 @@
+[
+  {
+    "id": "auth-login-doc",
+    "title": "Login API",
+    "text": "POST /login authenticates user credentials. Valid email and password return HTTP 200 and token. Invalid credentials return HTTP 401."
+  },
+  {
+    "id": "auth-reset-password-doc",
+    "title": "Password reset API",
+    "text": "POST /password/reset starts password recovery. User provides email and receives reset instructions."
+  },
+  {
+    "id": "users-list-doc",
+    "title": "Users list API",
+    "text": "GET /users returns a paginated list of users. It supports page and size query parameters."
+  },
+  {
+    "id": "upload-file-size-doc",
+    "title": "File upload limits",
+    "text": "POST /files uploads a file. Files larger than 10MB must be rejected with HTTP 413 Payload Too Large."
+  },
+  {
+    "id": "orders-create-doc",
+    "title": "Orders creation API",
+    "text": "POST /orders creates a new delivery order and returns order identifier after validation."
+  }
+]

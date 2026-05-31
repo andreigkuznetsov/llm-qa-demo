@@ -1,0 +1,36 @@
+[
+  {
+    "id": "login_positive",
+    "prompt": "Сгенерируй тест для GET /users",
+    "mustContain": [
+      "get",
+      "users"
+    ],
+    "mustNotContain": [
+      "delete",
+      "admin"
+    ]
+  },
+  {
+    "id": "login_negative",
+    "prompt": "Негативный тест для POST /login с пустым паролем",
+    "mustContain": [
+      "password",
+      "пуст"
+    ],
+    "mustNotContain": [
+      "success"
+    ]
+  },
+  {
+    "id": "upload_file",
+    "prompt": "Тест для загрузки файла больше допустимого размера",
+    "mustContain": [
+      "файл",
+      "размер"
+    ],
+    "mustNotContain": [
+      "успешно"
+    ]
+  }
+]
