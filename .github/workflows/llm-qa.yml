@@ -60,11 +60,14 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
       - name: Install Ollama and pull model
         run: |
           curl -fsSL https://ollama.com/install.sh | sh
           ollama serve > ollama.log 2>&1 &
-          
+
           for i in {1..30}; do
             if curl -s http://localhost:11434/api/tags > /dev/null; then
               echo "Ollama is ready"
@@ -95,7 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     needs: smoke
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' && github.event.inputs.run_full == 'true'
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.run_full == 'true')
 
     steps:
       - name: Checkout
@@ -110,6 +113,9 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
 
       - name: Install Ollama and pull model
         run: |
@@ -161,6 +167,9 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
 
       - name: Install Ollama and pull model
         run: |
