@@ -1,3 +1,5 @@
+[![TEST](https://github.com/andreigkuznetsov/llm-qa-demo/actions/workflows/llm-qa.yml/badge.svg?branch=main)](https://github.com/andreigkuznetsov/llm-qa-demo/actions/workflows/llm-qa.yml)
+
 # LLM QA Demo
 
 Демо-проект для тестирования LLM как вероятностной AI-системы через Java 21, Gradle, JUnit 5, Rest Assured, Jackson и AssertJ.
